@@ -10,4 +10,4 @@ or changing the value of the following in the `theme.conf` file
 
 ## Screenshots
 **Form Hidden.**
-![No Form Screenshot](./Previews/No Form.png)
+![No Form Screenshot](./Previews/NoForm.png)
