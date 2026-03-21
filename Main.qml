@@ -20,31 +20,33 @@ Rectangle {
 
         mirror: !(config.FormPosition == "right")
 
-        Rectangle {
-            id: clockBG
-
+        ColumnLayout {
             width: parent.width * 0.25
-            height: parent.height / 4
+            height: parent.height
 
             anchors {
-                top: parent.top
                 left: config.FormPosition == "left" ? undefined : parent.left
                 right: config.FormPosition == "right" ? undefined : parent.right
-                margins: 50
+                top: parent.top 
+                bottom: parent.bottom 
+
+                margins: 100
             }
 
-            opacity: 1
-            color: "transparent"
+            Clock {
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+            }
 
-            Clock {}
-
+            SystemButtonTray {
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            }
         }
     }
 
-    MouseArea {
-        id: mouseTracker
-        anchors.fill: parent
-        hoverEnabled: true
-        acceptedButtons: Qt.NoButton
-    }
+    // MouseArea {
+    //     id: mouseTracker
+    //     anchors.fill: parent
+    //     hoverEnabled: true
+    //     acceptedButtons: Qt.NoButton
+    // }
 }
