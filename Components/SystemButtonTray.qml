@@ -62,15 +62,14 @@ RowLayout {
                     }
                 },
 
-                // ToDo: why wont it work? Try to understand it...
-                // State {
-                //     name: "Hovered"
-                //     when: hovered
-                //     PropertyChanges {
-                //         target: parent.children[index]
-                //         palette.buttonText: "red"
-                //     }
-                // },
+                State {
+                    name: "Hovered"
+                    when: hovered
+                    PropertyChanges {
+                        target: parent.children[index]
+                        palette.buttonText: config.Text
+                    }
+                },
 
                 State {
                     name: "Focused"
