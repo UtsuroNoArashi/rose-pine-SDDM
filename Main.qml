@@ -20,6 +20,15 @@ Rectangle {
 
         mirror: !(config.FormPosition == "right")
 
+        LoginForm {
+            anchors {
+                left: config.FormPosition == "left" ? parent.left : undefined
+                right: config.FormPosition == "right" ? parent.right : undefined
+
+                margins: 100
+            }
+        }
+
         ColumnLayout {
             width: parent.width * 0.25
             height: parent.height
