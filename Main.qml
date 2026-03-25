@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 import "Components"
 
 Rectangle {
@@ -20,26 +20,16 @@ Rectangle {
 
         mirror: !(config.FormPosition == "right")
 
-        LoginForm {
-            anchors {
-                left: config.FormPosition == "left" ? parent.left : undefined
-                right: config.FormPosition == "right" ? parent.right : undefined
-
-                margins: 100
-            }
-        }
+        LoginForm {}
 
         ColumnLayout {
-            width: parent.width * 0.25
-            height: parent.height
+            width: parent.width * 0.3 
+            height: parent.height * 0.9
 
             anchors {
                 left: config.FormPosition == "left" ? undefined : parent.left
                 right: config.FormPosition == "right" ? undefined : parent.right
-                top: parent.top 
-                bottom: parent.bottom 
-
-                margins: 100
+                verticalCenter: parent.verticalCenter
             }
 
             Clock {
@@ -51,11 +41,4 @@ Rectangle {
             }
         }
     }
-
-    // MouseArea {
-    //     id: mouseTracker
-    //     anchors.fill: parent
-    //     hoverEnabled: true
-    //     acceptedButtons: Qt.NoButton
-    // }
 }
