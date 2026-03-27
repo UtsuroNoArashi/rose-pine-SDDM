@@ -10,6 +10,7 @@ Column {
         id: timeLabel
         anchors.horizontalCenter: parent.horizontalCenter
         font.pointSize: config.FontSize * 5
+        font.family: config.Font
         color: config.Text
         renderType: Text.QtRendering
         function updateTime() {
@@ -21,6 +22,7 @@ Column {
         id: dateLabel
         anchors.horizontalCenter: parent.horizontalCenter
         font.pointSize: config.FontSize * 1.5
+        font.family: config.Font
         color: config.Text
         renderType: Text.QtRendering
         function updateTime() {

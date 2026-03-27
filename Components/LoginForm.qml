@@ -1,109 +1,37 @@
 import QtQuick 2.14
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4 as Controls
-import SddmComponents 2.0
+import QtGraphicalEffects 1.0
 
-Rectangle {
-    id: formBG
-    color: "transparent"
+Item {
+    id: formRoot
     width: parent.width * 0.3
+    height: parent.height
 
     anchors {
-        left: parent.left
-        top: parent.top
-        bottom: parent.bottom
+        verticalCenter: parent.verticalCenter
+        left: config.FormPosition == "left" ? parent.left : undefined
+        right: config.FormPosition == "right" ? parent.right : undefined
     }
 
-    Column {
-        id: formContainer
+    Rectangle {
+        id: formBG
 
-        anchors.centerIn: parent
-        spacing: 20
+        property color formBGColor: config.Base
 
-        Controls.TextField {
-            id: userField
-            width: formBG.width * 0.5
-            height: config.FontSize * 3
+        color: Qt.rgba(formBGColor.r, formBGColor.g, formBGColor.b, 0.8)
+        // FIX 1: removed conflicting `width: parent.width * 0.3`; anchors.fill already covers sizing
+        anchors.fill: parent
 
-            placeholderText: "Username"
-            placeholderTextColor: config.Subtle
-
-            color: config.Text
-            font.pointSize: config.FontSize * 1.125
-
-            horizontalAlignment: TextInput.AlignHCenter
-
-            background: Rectangle {
-                anchors.fill: parent
-                property color inputBG: config.Surface
-
-                color: Qt.rgba(inputBG.r, inputBG.g, inputBG.b, 0.5)
-                radius: 20
+        layer {
+            enabled: true
+            effect: FastBlur {
+                anchors.fill: formBG
+                source: formBG
+                radius: 25
             }
         }
-
-        Controls.TextField {
-            id: passField
-            width: formBG.width * 0.5
-            height: config.FontSize * 3
-
-            placeholderText: "Password"
-            placeholderTextColor: config.Subtle
-
-            color: config.Text
-            font.pointSize: activeFocus ? config.FontSize * 0.75 : config.FontSize * 1.125
-            echoMode: TextInput.Password
-
-            horizontalAlignment: TextInput.AlignHCenter
-            verticalAlignment: TextInput.AlignVCenter
-
-            background: Rectangle {
-                anchors.fill: parent
-
-                property color inputBG: config.Surface
-
-                color: Qt.rgba(inputBG.r, inputBG.g, inputBG.b, 0.5)
-                radius: 20
-            }
-        }
-
-        Controls.Button {
-            text: "Login"
-            width: formBG.width * 0.5
-
-            contentItem: Text {
-                text: parent.text
-                color: config.Text
-                font.pointSize: config.FontSize
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            background: Rectangle {
-                width: parent.width
-                height: config.FontSize * 3
-                radius: 20          // pill shape — match your text fields
-
-                property color btnBG: config.Rose
-                color: parent.pressed ? "red" : Qt.rgba(btnBG.r, btnBG.g, btnBG.b, 0.5)
-            }
-
-            onClicked: sddm.login(userField.text, passField.text, sessionCombo.currentIndex)
-        }
-
     }
 
-    ComboBox {
-        id: sessionCombo
-        model: sessionModel
-        // textRole: "name"
-    }
-
-    Connections {
-        target: sddm
-        onLoginFailed: {
-            passField.text = ""
-            passField.focus = true
-        }
-    }
+    Input {}
 }
