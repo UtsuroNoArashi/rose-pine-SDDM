@@ -1,7 +1,8 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4 as Controls
-import QtGraphicalEffects 1.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Effects
+import QtQuick.Controls as Controls
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: formRoot
@@ -19,19 +20,13 @@ Item {
 
         property color formBGColor: config.Base
 
-        color: Qt.rgba(formBGColor.r, formBGColor.g, formBGColor.b, 0.8)
-        // FIX 1: removed conflicting `width: parent.width * 0.3`; anchors.fill already covers sizing
+        color: Qt.rgba(formBGColor.r, formBGColor.g, formBGColor.b, 0.6)
         anchors.fill: parent
-
-        layer {
-            enabled: true
-            effect: FastBlur {
-                anchors.fill: formBG
-                source: formBG
-                radius: 25
-            }
-        }
     }
 
-    Input {}
+    Input {
+        anchors.centerIn: parent
+        width: parent.width * 0.75
+        height: parent.height
+    }
 }

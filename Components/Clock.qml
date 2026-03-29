@@ -1,18 +1,20 @@
-import QtQuick 2.15
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 
 Column {
     id: clock
-    width: parent.width / 2
 
     Label {
         id: timeLabel
+        font.family: fontFamily
+        font.pointSize: fontSize * 5 
+
         anchors.horizontalCenter: parent.horizontalCenter
-        font.pointSize: config.FontSize * 5
-        font.family: config.Font
-        color: config.Text
+
+        color: mainTexts
         renderType: Text.QtRendering
+
         function updateTime() {
             text = new Date().toLocaleTimeString(Qt.locale(config.Locale), config.HourFormat);
         }
@@ -20,11 +22,14 @@ Column {
 
     Label {
         id: dateLabel
+        font.pointSize: fontSize * 2
+        font.family: fontFamily
+
         anchors.horizontalCenter: parent.horizontalCenter
-        font.pointSize: config.FontSize * 1.5
-        font.family: config.Font
-        color: config.Text
+        
+        color: mainTexts
         renderType: Text.QtRendering
+        
         function updateTime() {
             text = new Date().toLocaleDateString(Qt.locale(config.Locale), config.DateFormat);
         }

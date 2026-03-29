@@ -1,45 +1,46 @@
-import QtQuick 2.14
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4 as Controls
-import QtGraphicalEffects 1.0
-import SddmComponents 2.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as Controls
+import Qt5Compat.GraphicalEffects
+import SddmComponents
 
 ColumnLayout {
-        anchors {
-            centerIn: parent
-            margins: 50
-        }
+    id: inputsRoot
+    property color inputsBG: config.Surface
 
-        spacing: 20
+    Column {
+        Layout.preferredWidth: parent.width
+        Layout.preferredHeight: parent.height * 0.25
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
-        // FIX 2: replaced Row with an Item so userField and userSelector
-        // can both anchor to it and properly overlay each other
+        spacing: defaultSpacings
+
         Item {
-            Layout.preferredWidth: formRoot.width * 0.5
-            Layout.preferredHeight: config.FontSize * 3
-            Layout.alignment: Qt.AlignHCenter
+            width: parent.width * 0.75
+            height: fontSize * 4
+            anchors.horizontalCenter: parent.horizontalCenter
 
             Controls.TextField {
                 id: userField
-                // FIX 3: size now comes from the parent Item via anchors.fill;
-                // removed bare width/height and illegal anchors.horizontalCenter
-                anchors.fill: parent
+                width: parent.width
+                height: fontSize * 3
+
+                anchors.centerIn: parent
 
                 placeholderText: "Username"
                 placeholderTextColor: config.Subtle
 
-                color: config.Text
-                font.pointSize: config.FontSize * 1.125
-                font.family: config.Font
-
+                color: mainTexts
                 horizontalAlignment: TextInput.AlignHCenter
+                font {
+                    family: fontFamily
+                    pointSize: fontSize
+                }
 
                 background: Rectangle {
                     anchors.fill: parent
-                    property color inputBG: config.Surface
-
-                    color: Qt.rgba(inputBG.r, inputBG.g, inputBG.b, 0.4)
-                    radius: 20
+                    color: Qt.rgba(inputsBG.r, inputsBG.g, inputsBG.b, 0.4)
+                    radius: defaultRoundings
                     border {
                         width: 2
                         color: config.HighlightLow
@@ -50,28 +51,17 @@ ColumnLayout {
             Controls.ComboBox {
                 id: userSelector
                 model: userModel
-
                 currentIndex: model.lastIndex
                 textRole: "name"
 
-                // FIX 4: anchors to the shared parent Item instead of a sibling
-                anchors.fill: parent
-
-                contentItem: {}
-
-                function updateText() {
-                    userField.text = currentText.charAt(0).toUpperCase() + currentText.slice(1);
-                }
-
-                onActivated: {
-                    updateText();
-                    passwordField.focus = true;
-                    passwordField.text = "";
-                }
+                anchors.fill: userField
 
                 background: Rectangle {
+                    anchors.fill: parent
                     color: "transparent"
                 }
+
+                contentItem: {}
 
                 popup: Controls.Popup {
                     y: userSelector.height
@@ -79,7 +69,7 @@ ColumnLayout {
                     padding: 0
 
                     background: Rectangle {
-                        color: config.Surface
+                        color: inputsBG
                     }
 
                     contentItem: ListView {
@@ -94,20 +84,23 @@ ColumnLayout {
                     anchors.horizontalCenter: parent.horizontalCenter
                     contentItem: Text {
                         text: model.name
-                        color: config.Text
+                        color: mainTexts
                     }
 
                     background: Rectangle {
                         anchors.fill: parent
-                        property color selectorBG: config.Overlay
-                        color: Qt.rgba(selectorBG.r, selectorBG.g, selectorBG.b, 0.4)
+                        color: config.Overlay
                     }
                 }
 
                 indicator: Controls.Button {
                     id: userSelectorIcon
+                    width: 36
+                    height: 36
                     anchors {
                         right: parent.right
+                        verticalCenter: parent.verticalCenter
+                        rightMargin: 5
                     }
 
                     background: Rectangle {
@@ -116,7 +109,7 @@ ColumnLayout {
                     }
 
                     icon {
-                        color: config.Text
+                        color: mainTexts
                         source: Qt.resolvedUrl("../Assets/User.svgz")
                     }
                 }
@@ -139,35 +132,43 @@ ColumnLayout {
                         }
                     }
                 ]
+
+                onActivated: {
+                    userField.text = currentText.charAt(0).toUpperCase() + currentText.slice(1);
+                    passwordField.focus = true;
+                    passwordField.text = "";
+                }
             }
         }
 
         Controls.TextField {
             id: passwordField
-            // FIX 5: replaced bare width/height/anchors.horizontalCenter with
-            // Layout properties, which are correct inside a ColumnLayout
-            Layout.preferredWidth: formRoot.width * 0.5
-            Layout.preferredHeight: config.FontSize * 3
-            Layout.alignment: Qt.AlignHCenter
+            width: parent.width * 0.75
+            height: fontSize * 3
+            anchors.horizontalCenter: parent.horizontalCenter
 
             placeholderText: "Password"
             placeholderTextColor: config.Subtle
 
-            color: config.Text
+            color: mainTexts
             horizontalAlignment: TextInput.AlignHCenter
             echoMode: TextInput.Password
 
-            font.family: config.Font
+            font.family: fontFamily
+
+            Keys.onPressed: event => {
+                if ((event.key == Qt.Key_Enter) || (event.key == Qt.Key_Return) && (passwordField.text !== ""))
+                    sddm.login(userField.text, passwordField.text, 0);
+            }
 
             background: Rectangle {
                 anchors.fill: parent
-                property color inputBG: config.Surface
 
-                color: Qt.rgba(inputBG.r, inputBG.g, inputBG.b, 0.4)
-                radius: 20
+                color: Qt.rgba(inputsBG.r, inputsBG.g, inputsBG.b, 0.375)
+                radius: defaultRoundings
                 border {
                     width: 2
-                    color: config.HighlightLow
+                    color: inputsBG
                 }
             }
 
@@ -177,7 +178,7 @@ ColumnLayout {
                     when: !passwordField.activeFocus
                     PropertyChanges {
                         target: passwordField
-                        font.pointSize: config.FontSize * 1.125
+                        font.pointSize: fontSize
                     }
                 },
                 State {
@@ -185,60 +186,157 @@ ColumnLayout {
                     when: passwordField.activeFocus
                     PropertyChanges {
                         target: passwordField
-                        font.pointSize: config.FontSize * 0.8
+                        font.pointSize: fontSize * 0.8
                     }
                 }
             ]
         }
 
-        Controls.Button {
-            id: loginButton
-            text: "Login"
-            Layout.topMargin: 50
-            Layout.preferredWidth: formRoot.width * 0.25
-            Layout.preferredHeight: config.FontSize * 3
-            Layout.alignment: Qt.AlignHCenter
-            font.family: config.Font 
+        Controls.CheckBox {
+            id: showPasswordCheck
+            x: passwordField.x
+            height: 24
+            contentItem: Text {
+                text: "Show password?"
+                leftPadding: parent.indicator.width + parent.spacing
+                color: config.Rose
+                verticalAlignment: Text.AlignVCenter
+                font {
+                    family: fontFamily
+                    pointSize: fontSize
+                }
+            }
 
-            background: Rectangle {
-                id: loginButtonBG
-                radius: 20
+            indicator: Controls.Button {
+                id: checkButton
+                width: 24
+                height: parent.height
+                anchors.left: parent.left
+                checkable: true
+                checked: false
+
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: Qt.rgba(inputsBG.r, inputsBG.g, inputsBG.b, 0.375)
+                    border {
+                        width: 2
+                        color: inputsBG
+                    }
+                }
+
+                icon {
+                    color: mainTexts
+                }
 
                 states: [
                     State {
-                        name: "Invalid"
-                        when: passwordField.text == ""
+                        name: "Unchecked"
+                        when: !checkButton.checked
                         PropertyChanges {
-                            target: loginButtonBG
-                            color: config.Rose
-                            opacity: 0.3
-                            enabled: false
+                            target: checkButton
+                            icon.source: ""
+                        }
+                        PropertyChanges {
+                            target: passwordField
+                            echoMode: TextInput.Password
                         }
                     },
                     State {
-                        name: "Valid"
-                        when: passwordField.text != ""
+                        name: "Checked"
+                        when: checkButton.checked
                         PropertyChanges {
-                            target: loginButtonBG
-                            color: config.Rose
-                            enabled: true
+                            target: checkButton
+                            icon.source: Qt.resolvedUrl("../Assets/CheckMark.svg")
+                        }
+                        PropertyChanges {
+                            target: passwordField
+                            echoMode: TextInput.Normal
                         }
                     }
                 ]
             }
-
-            onClicked: sddm.login(userField.text, passwordField.text, 0)
         }
 
-        Connections {
-            target: sddm
+        Controls.Label {
+            id: failedLogin
+            text: " "
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: config.Love
 
-            onLoginSucceeded: {
-                console.log("Login succeeded!");
+            font {
+                family: fontFamily
+                pointSize: fontSize
+                italic: true
+            }
+        }
+
+        Controls.Button {
+            id: loginButton
+            width: parent.width * 0.5
+            height: fontSize * 3
+
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            contentItem: Text {
+                text: "Login"
+                color: mainTexts
+                horizontalAlignment: Text.AlignHCenter
+
+                font {
+                    family: fontFamily
+                    pointSize: fontSize * 1.125
+                }
             }
 
-            onLoginFailed: {
-                passwordField.text = "";
+            background: Rectangle {
+                id: loginButtonBG
+                radius: defaultRoundings
+            }
+
+            states: [
+                State {
+                    name: "Invalid"
+                    when: passwordField.text == ""
+                    PropertyChanges {
+                        target: loginButtonBG
+                        color: config.Overlay
+                        // opacity: 0.3
+                        enabled: false
+                    }
+                },
+                State {
+                    name: "Valid"
+                    when: passwordField.text != ""
+                    PropertyChanges {
+                        target: loginButtonBG
+                        color: config.Overlay
+                        enabled: true
+                    }
+                }
+            ]
+
+            onClicked: {
+                console.log(sessionModel.currentIndex);
+                sddm.login(userField.text, passwordField.text, sessionModel.currentIndex);
             }
         }
     }
+
+    // TODO: complete formatting 
+    // Controls.ComboBox {
+    //     model: sessionModel
+    //     currentIndex: model.lastIndex
+    //     textRole: "name"
+    // }
+
+    Connections {
+        target: sddm
+
+        onLoginFailed: {
+            failedLogin.text = "Login failed!";
+
+            passwordField.text = "";
+            passwordField.focus = true;
+        }
+    }
+}

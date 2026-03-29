@@ -1,16 +1,14 @@
-import QtQuick 2.15
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.14
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
 
 RowLayout {
-    spacing: config.FontSize  
+    spacing: config.FontSize
 
     property var suspend: ["Suspend", sddm.canSuspend]
     property var hibernate: ["Hibernate", sddm.canHibernate]
     property var reboot: ["Reboot", sddm.canReboot]
     property var shutdown: ["Shutdown", sddm.canPowerOff]
-
-    property Control exposedSession
 
     Repeater {
         id: systemButtons
@@ -19,38 +17,36 @@ RowLayout {
 
         RoundButton {
             text: modelData[0]
-            font.pointSize: config.FontSize * 0.75
-            font.family: config.Font
+            font.pointSize: fontSize * 0.75
+            font.family: fontFamily
 
             Layout.alignment: Qt.AlignHCenter
-            icon.source: modelData ? Qt.resolvedUrl("../Assets/" + modelData[0] + ".svgz") : ""
-            icon.height: config.FontSize * 3
-            icon.width: config.FontSize * 3.5
+
+            icon {
+                height: fontSize * 3.5
+                width: fontSize * 3.5
+                source: modelData ? Qt.resolvedUrl("../Assets/" + modelData[0] + ".svgz") : ""
+            }
 
             display: AbstractButton.TextUnderIcon
+
             visible: true
             hoverEnabled: true
 
-            palette.buttonText: config.Muted
+            palette.buttonText: config.Subtle
             background: Rectangle {
                 height: 2
                 color: "transparent"
                 width: parent.width
-                border.width: parent.activeFocus ? 1 : 0
-                border.color: "transparent"
                 anchors.top: parent.bottom
             }
 
             Keys.onReturnPressed: clicked()
             onClicked: {
                 parent.forceActiveFocus();
-                index == 0 ? sddm.suspend() 
-                        : index == 1 ? sddm.hibernate() 
-                        : index == 2 ? sddm.reboot() 
-                        : sddm.powerOff();
+                index == 0 ? sddm.suspend() : index == 1 ? sddm.hibernate() : index == 2 ? sddm.reboot() : sddm.powerOff();
             }
 
-            KeyNavigation.up: exposedSession
             KeyNavigation.left: parent.children[index - 1]
 
             states: [
@@ -62,16 +58,14 @@ RowLayout {
                         palette.buttonText: config.Rose
                     }
                 },
-
                 State {
                     name: "Hovered"
                     when: hovered
                     PropertyChanges {
                         target: parent.children[index]
-                        palette.buttonText: config.Text
+                        palette.buttonText: mainTexts
                     }
                 },
-
                 State {
                     name: "Focused"
                     when: activeFocus
@@ -80,7 +74,6 @@ RowLayout {
                         palette.buttonText: config.HighlightMed
                     }
                 }
-
             ]
 
             transitions: [
