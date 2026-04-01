@@ -38,7 +38,7 @@ Item {
         }
         current: applyTheme()
     }
-
+    
     Background {
         id: wallpaper
         color: theme.current.base
@@ -50,15 +50,22 @@ Item {
         rows: 3
         anchors {
             fill: parent 
-            leftMargin: config.Margins || 50
-            rightMargin: config.Margins || 50
+            leftMargin: config.Margins || 75
+            rightMargin: config.Margins || 75
         }
 
         Clock {
             Layout.preferredWidth: parent.width / 3
             Layout.row: 1 
             Layout.column: 0
-            Layout.alignment: (root.formIsLeft ? Qt.AlignRight : Qt.AlignLeft) | Qt.AlignVCenter
+            Layout.alignment: (root.formIsLeft ? Qt.AlignRight : Qt.AlignLeft)
+        }
+
+        Inputs {
+            Layout.preferredWidth: parent.width / 3 
+            Layout.row: 1 
+            Layout.column: 2 
+            Layout.alignment: root.formIsLeft ? Qt.AlignLeft : Qt.AlignRight
         }
 
 
