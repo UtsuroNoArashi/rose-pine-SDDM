@@ -9,6 +9,10 @@ Item {
     width: Screen.width
     height: Screen.height
 
+    readonly property int fontSize: config.ForceFontSize == "true" ? parseInt(config.FontSize) : parseInt((width / 1920) * 10)
+    readonly property bool formIsLeft: config.FormPosition == "left"
+    readonly property bool layoutIsClassic: config.Layout == "classic"
+    
     ThemeBuilder {
         id: theme
 
@@ -27,24 +31,41 @@ Item {
                 }
             }
 
-            if (config.DeclareTheme)
+            if (config.DeclareTheme == "true")
                 return theme.createTheme(config.NewBase, config.NewSurface, config.NewOverlay, config.NewText, config.NewSubtle, config.NewAccent, config.NewAccent2, config.NewAccent3);
 
-            return main;
+            return moon;
         }
         current: applyTheme()
     }
 
     Background {
+        id: wallpaper
         color: theme.current.base
         source: Qt.resolvedUrl("./Backgrounds/Wallpaper.jpg")
     }
 
     GridLayout {
+        columns: 3
+        rows: 3
+        anchors {
+            fill: parent 
+            leftMargin: config.Margins || 50
+            rightMargin: config.Margins || 50
+        }
+
+        Clock {
+            Layout.preferredWidth: parent.width / 3
+            Layout.row: 1 
+            Layout.column: 0
+            Layout.alignment: (root.formIsLeft ? Qt.AlignRight : Qt.AlignLeft) | Qt.AlignVCenter
+        }
+
+
         /*TODO:
           * > Toolbar: sessionSelector, keyboardSelector, systemButtonsTray, virtualKeyboard?!?
           *
-          * > Clock: time and date (onHovered: change both date and hour format)
+          * > Clock: fix text positioning with respect to the loaded layout
           *
           * > Login panel: yet to decide. See below for ideas
           * >> i. Classic user and password text fields  + login button
