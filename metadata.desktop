@@ -13,4 +13,7 @@ Theme-API=2.0
 TranslationsDirectory=translations
 QtVersion=6
 
-ConfigFile=theme.conf
+# ConfigFile=Styles/Dawn.conf
+# ConfigFile=Styles/Main.conf 
+# ConfigFile=Styles/Moon.conf 
+# ConfigFile=Styles/Default.conf
