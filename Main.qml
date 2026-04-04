@@ -10,14 +10,14 @@ Item {
     width: Screen.width
     height: Screen.height
 
-    readonly property int fontSize: config.ForceFontSize == "true" ? parseInt(config.FontSize) : parseInt((width / 1920) * 10)
+    readonly property int fontSize: config.ForceFontSize === "true" ? config.FontSize : parseInt((width / 1920) * 10)
     property int selectedSession: 0
 
     ThemeBuilder {
         id: theme
 
         function applyTheme() {
-            if (config.Variant != "") {
+            if (config.Variant !== "") {
                 switch (config.Variant) {
                 case "main":
                     return main;
@@ -31,7 +31,7 @@ Item {
                 }
             }
 
-            if (config.DeclareTheme == "true")
+            if (config.DeclareTheme === "true")
                 return theme.createTheme(config.NewBase, config.NewSurface, config.NewOverlay, config.NewText, config.NewSubtle, config.NewAccent, config.NewAccent2, config.NewAccent3);
 
             return moon;

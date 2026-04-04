@@ -6,7 +6,7 @@ Column {
 
     Label {
         id: timeLabel
-        color: theme.current.text 
+        color: theme.text 
         horizontalAlignment: root.formIsLeft ? Text.AlignLeft : Text.AlignRight
 
         anchors {
@@ -26,7 +26,7 @@ Column {
 
     Label {
         id: dateLabel
-        color: theme.current.text
+        color: theme.text
         horizontalAlignment: Text.AlignLeft
 
         anchors {

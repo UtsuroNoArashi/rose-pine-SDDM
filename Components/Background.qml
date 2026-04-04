@@ -14,7 +14,8 @@ Rectangle {
         id: wallpaper
         anchors.fill: parent 
         source: source
-        fillMode: Image.preserveAspectCrop
+        fillMode: Image.PreserveAspectCrop
+
         mirror: mirror
     }
 }

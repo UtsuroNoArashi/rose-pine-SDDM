@@ -165,8 +165,6 @@ Column {
         }
 
         Keys.onPressed: $ => {
-            console.log(`\Username: ${username.text.toLowerCase()}\nPassword: ${passwordField.text}\nSession: ${root.selectedSession}`);
-
             if (($.key === Qt.Key_Return) || ($.key === Qt.Key_Enter))
                 sddm.login(username.text.toLowerCase(), passwordField.text, root.selectedSession);
         }

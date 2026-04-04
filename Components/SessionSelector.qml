@@ -27,10 +27,10 @@ Item {
         textRole: "name"
 
         function getSessionIcon(name) {
-            var available_session_icons = ["hyprland", "plasma", "gnome", "ubuntu", "sway", "awesome", "i3", "bspwm", "dwm", "xfce", "cinnamon", "niri"];
-            for (var i = 0; i < available_session_icons.length; i++) {
-                if (name && name.toLowerCase().includes(available_session_icons[i]))
-                    return "../Assets/Sessions/" + available_session_icons[i] + ".svg";
+            var availableIcons = ["hyprland", "plasma", "gnome", "ubuntu", "sway", "awesome", "i3", "bspwm", "dwm", "xfce", "cinnamon", "niri"];
+            for (var i = 0; i < availableIcons.length; i++) {
+                if (name && name.toLowerCase().includes(availableIcons[i]))
+                    return "../Assets/Sessions/" + availableIcons[i] + ".svg";
             }
             return "../Assets/Sessions/default.svg";
         }
@@ -82,7 +82,7 @@ Item {
             width: parent.width
             height: Math.min(contentItem.implicitHeight, sessionSelector.Window.height - topMargin - bottomMargin)
             padding: 5
-            y: parent.y + parent.height + 10
+            y: parent.y - contentHeight - 10
 
             background: Rectangle {
                 color: theme.mapToAlpha(theme.surface, 0.4)
