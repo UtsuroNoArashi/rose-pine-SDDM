@@ -4,7 +4,17 @@ This is a (WIP) custom theme for SDDM.
 ## Colorscheme
 By default the Rosé Pine theme is used (the `main` variant precisely),
 but it can be easely changed, as many other properties. 
-See: [`Customization`](#customization) for more details.
+See: [`Customization`](#customization) for more details. 
+
+## Screenshots 
+* **Main**
+![Main](./Previews/Main.png)
+
+* **Moon**
+![Moon](./Previews/Moon.png)
+
+* **Dawn**
+![Dawn](./Previews/Dawn.png)
 
 ## Customization
 The theme uses several config values, listed below. 

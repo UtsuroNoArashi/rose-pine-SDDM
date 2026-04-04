@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Effects
 import QtQuick.Controls
 import "Components"
 
@@ -10,8 +11,7 @@ Item {
     height: Screen.height
 
     readonly property int fontSize: config.ForceFontSize == "true" ? parseInt(config.FontSize) : parseInt((width / 1920) * 10)
-    readonly property bool formIsLeft: config.FormPosition == "left"
-    property int selectedSession
+    property int selectedSession: 0
 
     ThemeBuilder {
         id: theme
@@ -57,28 +57,28 @@ Item {
         Clock {
             Layout.preferredWidth: parent.width / 3
             Layout.row: 1
-            Layout.column: root.formIsLeft ? 2 : 0
-            Layout.alignment: root.formIsLeft ? Qt.AlignRight : Qt.AlignLeft
+            Layout.column: config.FormPosition === "left" ? 2 : 0
+            Layout.alignment: config.FormPosition === "left" ? Qt.AlignRight : Qt.AlignLeft
         }
 
         LoginForm {
             Layout.preferredWidth: parent.width / 4
             Layout.preferredHeight: parent.height / 4
             Layout.row: 1
-            Layout.column: root.formIsLeft ? 0 : 2
-            Layout.alignment: root.formIsLeft ? Qt.AlignLeft : Qt.AlignRight
+            Layout.column: config.FormPosition === "left" ? 0 : 2
+            Layout.alignment: config.FormPosition === "left" ? Qt.AlignLeft : Qt.AlignRight
         }
 
-        ToolBar {
-            Layout.preferredWidth: parent.width
-            Layout.preferredHeight: root.fontSize * 4.5
+        SessionSelector {
+            id: sessionSelector
+            Layout.preferredWidth: parent.width / 10
+            Layout.preferredHeight: 50
             Layout.row: 2
-            Layout.columnSpan: 3
-            Layout.alignment: Qt.AlignBottom
+            Layout.column: 0
+            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             Layout.bottomMargin: config.Margins / 2 || 25
         }
     }
-
     /* TODO:
     * > Toolbar: sessionSelector, keyboardSelector, systemButtonsTray, virtualKeyboard?!?
     *
