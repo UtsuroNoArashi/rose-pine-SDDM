@@ -1,7 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
-import QtQuick.Controls
 import "Components"
 
 Item {
@@ -41,7 +39,7 @@ Item {
 
     Background {
         id: wallpaper
-        color: theme.current.base
+        colorBG: theme.current.base
         source: Qt.resolvedUrl(config.Background)
     }
 
@@ -80,15 +78,7 @@ Item {
         }
     }
     /* TODO:
-    * > Toolbar: sessionSelector, keyboardSelector, systemButtonsTray, virtualKeyboard?!?
-    *
-    * > Clock: fix text positioning with respect to the loaded layout
-    *
-    * > Login panel: yet to decide. See below for ideas
-    * >> i. Classic user and password text fields  + login button
-    * >> ii. userSelector (ComboBox) + password text field + login button
-    * >> iii. As (ii.) but the password text field is presented in an overlay panel
-    * >> iv. All the above decided by some config option
+    * > Toolbar: keyboardSelector, systemButtonsTray, virtualKeyboard?!?
     * */
 
 }

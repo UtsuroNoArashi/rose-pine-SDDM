@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
 Column {
@@ -9,8 +8,6 @@ Column {
 
     Row {
         id: userField
-        // property alias urername: username.text
-        // property alias lastUser: userList.currentText
 
         width: parent.width
         anchors.left: parent.left
