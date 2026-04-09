@@ -75,15 +75,6 @@ Item {
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             Layout.bottomMargin: config.Margins / 2 || 25
         }
-
-        SystemTray {
-            Layout.preferredWidth: parent.width / 10 
-            Layout.preferredHeight: 50 
-            Layout.row: 2 
-            Layout.column: 2 
-            Layout.alignment: Qt.AlignRight | Qt.AlignBottom 
-            Layout.bottomMargin: config.Margins / 2 || 25
-        }
     }
     /* TODO:
     * > Toolbar: keyboardSelector, systemButtonsTray, virtualKeyboard?!?
