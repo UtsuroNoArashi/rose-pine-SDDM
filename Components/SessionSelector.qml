@@ -37,44 +37,43 @@ Item {
         background: Item {}
         indicator: Item {}
 
-        contentItem: RowLayout {
-            spacing: 10
-            width: parent.width
-            clip: true
+        contentItem: Item {
+            Row {
+                anchors.centerIn: parent
+                spacing: 15
 
-            anchors {
-                fill: parent
-                leftMargin: config.Margins / 2 || 25
-                rightMargin: config.Margins / 2 || 25
-            }
+                Image {
+                    width: 28
+                    height: 28
 
-            Image {
-                width: 24
-                height: 24
-                source: sessionSelector.getSessionIcon(sessionSelector.currentText)
+                    source: sessionSelector.getSessionIcon(sessionSelector.currentText)
 
-                layer {
-                    enabled: true
-                    effect: ColorOverlay {
-                        color: theme.accent2
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+
+                    layer {
+                        enabled: true
+                        effect: ColorOverlay {
+                            color: theme.accent2
+                        }
                     }
                 }
 
-                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            }
+                Text {
+                    text: sessionSelector.currentText
+                    color: theme.text
+                    elide: Text.ElideRight
+                    height: parent.height
+                    width: sessionSelector.width / 2
 
-            Text {
-                text: sessionSelector.currentText
-                color: theme.text
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
 
-                elide: Text.ElideLeft
-                font {
-                    family: config.Font
-                    pointSize: root.fontSize * 1.2
+                    font {
+                        family: config.Font
+                        pointSize: root.fontSize * 1.3
+                    }
                 }
-
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignLeft
             }
         }
 
@@ -108,42 +107,43 @@ Item {
             height: root.fontSize * 4
             anchors.left: parent.left
 
-            contentItem: Row {
-                spacing: 10
-                width: parent.width
-                anchors {
-                    leftMargin: config.Margins / 2 || 25
-                    rightMargin: config.Margins / 2 || 25
-                }
+            contentItem: Item {
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 15
 
-                Image {
-                    width: 24
-                    height: 25
-                    source: sessionSelector.getSessionIcon(model.name)
+                    Image {
+                        width: 28
+                        height: 28
 
-                    layer {
-                        enabled: true
-                        effect: ColorOverlay {
-                            color: theme.accent2
+                        source: sessionSelector.getSessionIcon(model.name)
+
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+
+                        layer {
+                            enabled: true
+                            effect: ColorOverlay {
+                                color: theme.accent2
+                            }
                         }
                     }
 
-                    Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                }
+                    Text {
+                        text: model.name
+                        color: theme.text
+                        elide: Text.ElideRight
+                        height: parent.height
+                        width: sessionSelector.width / 2
 
-                Text {
-                    text: model.name
-                    color: theme.text
-                    elide: Text.ElideRight
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
 
-                    font {
-                        family: config.Font
-                        pointSize: root.fontSize * 1.1
-                        capitalization: Font.Capitalize
+                        font {
+                            family: config.Font
+                            pointSize: root.fontSize * 1.3
+                        }
                     }
-
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignLeft
                 }
             }
 
