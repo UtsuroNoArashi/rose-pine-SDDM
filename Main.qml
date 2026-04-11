@@ -43,6 +43,13 @@ Item {
         source: Qt.resolvedUrl(config.Background)
     }
 
+    MouseArea {
+        id: globalTracker
+        anchors.fill: parent
+        hoverEnabled: true
+        propagateComposedEvents: true
+    }
+
     GridLayout {
         rows: 3
         columns: 3
@@ -74,8 +81,10 @@ Item {
             Layout.column: 0
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             Layout.bottomMargin: config.Margins / 2 || 25
+            tracker: globalTracker
         }
     }
+
     /* TODO:
     * > Toolbar: keyboardSelector, systemButtonsTray, virtualKeyboard?!?
     * */

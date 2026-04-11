@@ -1,9 +1,36 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
 
 Item {
+    id: sessionTray
+    property var tracker: null
+    property int threshold: 250
+
+    readonly property bool isNear: tracker !== null && dist < threshold
+    readonly property real dist:  {
+        if (!tracker) 
+        return Infinity
+
+        var mp = sessionTray.parent.mapFromItem(
+                     tracker.parent,      // tracker lives in root
+                     tracker.mouseX,
+                     tracker.mouseY)
+
+        var cx = sessionTray.x + sessionTray.width  / 2
+        var cy = sessionTray.y + sessionTray.height / 2
+        console.log(`Session: X ${cx}, Y ${cy}`)
+        console.log(`Tracker: X ${mp.x}, Y ${mp.y}`)
+        var dx = mp.x - cx
+        var dy = mp.y - cy 
+        console.log(`dX: ${dx}, dY: ${dy}`)
+        
+        return Math.sqrt(dx * dx + dy * dy)
+    }
+
+
+    onIsNearChanged: {sessionSelector.popup.visible = isNear}
+
     Rectangle {
         anchors.fill: parent
         color: theme.mapToAlpha(theme.overlay, 0.4)
