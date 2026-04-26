@@ -5,7 +5,7 @@ import Qt5Compat.GraphicalEffects
 Item {
     id: sessionTray
     property var tracker: null
-    property int threshold: 250
+    property int threshold: 150
 
     readonly property bool isNear: tracker !== null && dist < threshold
     readonly property real dist:  {
@@ -19,25 +19,20 @@ Item {
 
         var cx = sessionTray.x + sessionTray.width  / 2
         var cy = sessionTray.y + sessionTray.height / 2
-        console.log(`Session: X ${cx}, Y ${cy}`)
-        console.log(`Tracker: X ${mp.x}, Y ${mp.y}`)
         var dx = mp.x - cx
         var dy = mp.y - cy 
-        console.log(`dX: ${dx}, dY: ${dy}`)
-        
         return Math.sqrt(dx * dx + dy * dy)
     }
 
-
-    onIsNearChanged: {sessionSelector.popup.visible = isNear}
+    onIsNearChanged: {sessionTray.opacity = isNear ? 1 : 0}
 
     Rectangle {
         anchors.fill: parent
-        color: theme.mapToAlpha(theme.overlay, 0.4)
+        color: theme.mapToAlpha(theme.surface, 0.4)
 
         border {
-            color: theme.overlay
-            width: 2
+            color: theme.surface
+            width: 3
         }
 
         radius: config.Roundings || 50
@@ -97,7 +92,7 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
 
                     font {
-                        family: config.Font
+                        family: root.fontFamily
                         pointSize: root.fontSize * 1.3
                     }
                 }
@@ -107,13 +102,13 @@ Item {
         popup: Popup {
             width: parent.width
             height: Math.min(contentItem.implicitHeight, sessionSelector.Window.height - topMargin - bottomMargin)
-            padding: 5
             y: parent.y - contentHeight - 10
+            visible: sessionTray.opacity == 1 && sessionSelector.pressed
 
             background: Rectangle {
-                color: theme.mapToAlpha(theme.surface, 0.4)
+                color: theme.mapToAlpha(theme.overlay, 0.4)
                 border {
-                    color: theme.surface
+                    color: theme.overlay
                     width: 3
                 }
                 radius: config.Roundings * 0.3 || 15
@@ -121,7 +116,7 @@ Item {
 
             contentItem: ListView {
                 clip: true
-                implicitHeight: contentHeight * 1.1
+                implicitHeight: Math.min(150, contentHeight + 10 ) 
                 model: sessionSelector.popup.visible ? sessionSelector.delegateModel : null
                 currentIndex: sessionSelector.highlightedIndex
 
@@ -167,7 +162,7 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
 
                         font {
-                            family: config.Font
+                            family: root.fontFamily
                             pointSize: root.fontSize * 1.3
                         }
                     }

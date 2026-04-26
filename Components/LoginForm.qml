@@ -2,6 +2,8 @@ import QtQuick
 import SddmComponents
 
 Item {
+    id: formRoot
+
     TextConstants {
         id: textConstants
     }

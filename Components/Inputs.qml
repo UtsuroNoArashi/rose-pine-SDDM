@@ -6,6 +6,8 @@ Column {
     id: inputsRoot
     spacing: 10
 
+    property bool failed
+
     Row {
         id: userField
 
@@ -16,18 +18,17 @@ Column {
             id: statusLabel
             text: "Login as: "
             color: theme.text
-            verticalAlignment: Text.AlignVCenter
 
             font {
-                family: config.Font
-                pointSize: root.fontSize * 1.5
+                family: root.fontFamily
+                pointSize: root.fontSize * 1.75
             }
         }
 
         ComboBox {
             id: userList
             width: parent.width / 2
-            height: root.fontSize * 3
+            height: root.fontSize * 3.25
 
             model: userModel
             currentIndex: model.lastIndex
@@ -35,24 +36,26 @@ Column {
 
             background: Item {}
             indicator: Rectangle {
-                width: 28
-                height: 28
+                width: 32
+                height: 32
 
                 anchors {
                     left: parent.left
                     verticalCenter: parent.verticalCenter
                 }
+
                 color: "transparent"
 
                 Image {
                     width: 24
                     height: 24
                     source: Qt.resolvedUrl("../Assets/user.svg")
+                    anchors.centerIn: parent
                     layer {
                         enabled: true
                         effect: ColorOverlay {
                             id: userIndicatorColor
-                            color: theme.text
+                            color: userList.hovered || userList.popup.visible ? theme.accent : theme.text
                         }
                     }
                 }
@@ -66,8 +69,8 @@ Column {
                 horizontalAlignment: Text.AlignHCenter
 
                 font {
-                    family: config.Font
-                    pointSize: root.fontSize * 1.5
+                    family: root.fontFamily
+                    pointSize: root.fontSize * 1.75
                     underline: true
                     capitalization: Font.Capitalize
                 }
@@ -76,13 +79,12 @@ Column {
             popup: Popup {
                 width: parent.width
                 height: Math.min(contentItem.implicitHeight, userList.Window.height - topMargin - bottomMargin)
-                padding: 1
                 y: parent.y - contentHeight - 10
 
                 background: Rectangle {
-                    color: theme.mapToAlpha(theme.surface, 0.4)
+                    color: theme.mapToAlpha(theme.overlay, 0.4)
                     border {
-                        color: theme.surface
+                        color: theme.overlay
                         width: 3
                     }
                     radius: config.Roundings * 0.3 || 15
@@ -90,7 +92,7 @@ Column {
 
                 contentItem: ListView {
                     clip: true
-                    implicitHeight: contentHeight * 1.1
+                    implicitHeight: Math.min(200, contentHeight + 10)
                     model: userList.popup.visible ? userList.delegateModel : null
                     currentIndex: userList.highlightedIndex
 
@@ -101,7 +103,6 @@ Column {
             delegate: ItemDelegate {
                 width: parent.width * 0.95
                 height: root.fontSize * 4
-                anchors.horizontalCenter: parent.horizontalCenter
 
                 contentItem: Text {
                     text: model.name
@@ -109,8 +110,8 @@ Column {
                     elide: Text.ElideRight
 
                     font {
-                        family: config.Font
-                        pointSize: root.fontSize * 1.1
+                        family: root.fontFamily
+                        pointSize: root.fontSize * 1.25
                         capitalization: Font.Capitalize
                     }
 
@@ -118,9 +119,7 @@ Column {
                     horizontalAlignment: Text.AlignLeft
                 }
 
-                background: Rectangle {
-                    color: "transparent"
-                }
+                background: Item {}
             }
 
             onActivated: {
@@ -134,7 +133,7 @@ Column {
     TextField {
         id: passwordField
         width: parent.width
-        height: root.fontSize * 3.5
+        height: root.fontSize * 4
 
         placeholderText: textConstants.password
         placeholderTextColor: theme.subtle
@@ -144,18 +143,18 @@ Column {
         horizontalAlignment: TextInput.AlignHCenter
 
         font {
-            family: config.Font
-            pointSize: activeFocus ? root.fontSize : root.fontSize * 1.5
+            family: root.fontFamily
+            pointSize: activeFocus ? root.fontSize * 1.25 : root.fontSize * 1.5
         }
 
         background: Rectangle {
             anchors.fill: parent
 
-            color: theme.mapToAlpha(theme.overlay, 0.4)
+            color: theme.mapToAlpha(theme.surface, 0.4)
 
             border {
-                color: theme.overlay
-                width: 2
+                color: theme.surface
+                width: 3
             }
 
             radius: config.Roundings || 20
@@ -167,9 +166,22 @@ Column {
         }
     }
 
+    Label {
+        id: errorMessage
+        text: textConstants.loginFailed + "!"
+
+        color: theme.accent3
+        font {
+            family: root.fontFamily
+            pointSize: root.fontSize * 1.2
+            italic: true
+        }
+        verticalAlignment: Text.AlignVCenter
+        opacity: failed ? 1 : 0
+    }
+
     CheckBox {
         id: showPassword
-        text: "Hiii"
 
         indicator: Rectangle {
             width: 24
@@ -180,25 +192,19 @@ Column {
                 verticalCenter: parent.verticalCenter
             }
 
-            color: theme.mapToAlpha(theme.overlay, 0.4)
+            color: theme.mapToAlpha(theme.surface, 0.4)
             border {
-                color: theme.overlay
+                color: theme.surface
                 width: 2
             }
 
-            Image {
-                width: 20
-                height: 20
-                anchors.centerIn: parent
+            Rectangle {
+                width: 16
+                height: 16
 
-                source: Qt.resolvedUrl("../Assets/check.svg")
+                anchors.centerIn: parent
+                color: theme.overlay
                 visible: showPassword.checked
-                layer {
-                    enabled: true
-                    effect: ColorOverlay {
-                        color: theme.text
-                    }
-                }
             }
         }
 
@@ -206,7 +212,7 @@ Column {
             text: textConstants.showPasswordPrompt
             color: theme.text
             font {
-                family: config.Font
+                family: root.fontFamily
                 pointSize: root.fontSize * 1.2
                 underline: true
             }
@@ -219,9 +225,25 @@ Column {
         }
     }
 
+    Connections {
+        target: sddm
+        onLoginSucceeded: {}
+        onLoginFailed: {
+            failed = true
+            passwordField.text = ""
+            resetError.running ? resetError.stop() && resetError.start() : resetError.start()
+        }
+    }
+
+    Timer {
+        id: resetError
+        interval: 2000
+        onTriggered: failed = false
+        running: false
+    }
+
     Component.onCompleted: {
-        var user = userList.currentText;
-        username.text = user.charAt(0).toUpperCase() + user.slice(1);
+        username.text = userList.currentText;
         passwordField.forceActiveFocus();
     }
 }

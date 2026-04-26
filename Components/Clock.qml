@@ -6,17 +6,14 @@ Column {
 
     Label {
         id: timeLabel
-        color: theme.text 
-        horizontalAlignment: root.formIsLeft ? Text.AlignLeft : Text.AlignRight
-
-        anchors {
-            left: root.formIsLeft ? undefined : parent.left
-            right: root.formIsLeft ? parent.right : undefined
-        }
+        color: theme.text
+        horizontalAlignment: Text.AlignLeft
+        anchors.horizontalCenter: parent.horizontalCenter
 
         font {
             family: config.Font
             pointSize: root.fontSize * 7.5
+            kerning: false
         }
 
         function updateLabel() {
@@ -28,15 +25,12 @@ Column {
         id: dateLabel
         color: theme.text
         horizontalAlignment: Text.AlignLeft
-
-        anchors {
-            left: root.formIsLeft ? undefined : parent.left
-            right: root.formIsLeft ? parent.right : undefined
-        }
+        anchors.horizontalCenter: parent.horizontalCenter
 
         font {
             family: config.Font
-            pointSize: root.fontSize * 3
+            pointSize: root.fontSize * 3.75
+            kerning: false
         }
 
         function updateLabel() {
