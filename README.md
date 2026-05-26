@@ -42,12 +42,12 @@ Accepted values are `main, moon, dawn`, all other values are discarded and `main
 * `Locale`: override system locale.
 * `HourFormat` and `DateFormat`: control how the time and date should be displayed.
 
-* `FormPosition`: controls where the form, and the clock module should be shown.
+* `FormPosition`: controls where the form, and indirectly the clock module, should be rendered.
     Accepted values are `rigth` and `left`.
 
 * `Margins` and `Roundings`: override the default value for margins and roundings.
 
 ### Where are the system buttons and the session selector? 
-Our idea of a minimalist theme leaves no space for visible elements besides the essential ones,
-i.e. the form and clock. It is for this reason that both the system buttons and the session selector,
-are shown when hovering the top and bottom part of the screen respectively. 
+Our idea of minimalist theme leaves no space for visible elements besides the essential ones,
+i.e. the form and the clock. It is for this reason that both the system buttons and the session selector
+are only shown when hovering the top-center and bottom-center part of the screen respectively. 
