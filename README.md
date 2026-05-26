@@ -19,8 +19,8 @@ See: [`Customization`](#customization) for more details.
 ## Customization
 The theme uses several config values, listed below. 
 These can be modified at liking to obtain the look desired.
+The following is a list of such properties with a brief explaination of each.
 
-the following is a list of such properties with a brief explaination of each.
 * `Backgrounds`: the path to the wallpaer. *Note:* the `path` must be accessible by sddm.
     For instance, something like `~/Pictures/wallpaper` won't work.
 
