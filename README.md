@@ -1,5 +1,5 @@
-# ABOUT
-This is a (WIP) custom theme for SDDM.
+# About
+A minimalist and functional theme for SDDM. 
 
 ## Colorscheme
 By default the Rosé Pine theme is used (the `main` variant precisely),
@@ -21,27 +21,33 @@ The theme uses several config values, listed below.
 These can be modified at liking to obtain the look desired.
 
 the following is a list of such properties with a brief explaination of each.
-* `Backgrounds`: the path to the wallpaer. *Note:* the `path` must be accessible by sddm. For instance, something like `~/Pictures/wallpaper` won't work.
+* `Backgrounds`: the path to the wallpaer. *Note:* the `path` must be accessible by sddm.
+    For instance, something like `~/Pictures/wallpaper` won't work.
 
 * `Variant`: if not null, it should specify the Rosé Pine variant to use.
 Accepted values are `main, moon, dawn`, all other values are discarded and `main` will be used.
 
 * `DeclareTheme`: set this to true to create a new theme, by providing a value for the following:
-    - `NewBase`: the primary color (eg. background color for the wallpaer)
-    - `NewSurface`: the secondary color 
-    - `NewOverlay`: the tertiary color 
-    - `NewText`: the texts color 
-    - `NewSubtle`: the placeholder color 
-    - `NewAccent`, `NewAccent2`, `NewAccent3`: the accent colors
+    - `NewBase`: the primary color (eg. background color for the wallpaer).
+    - `NewSurface`: the secondary color.
+    - `NewOverlay`: the tertiary color.
+    - `NewText`: the texts color.
+    - `NewSubtle`: the placeholder color.
+    - `NewAccent`, `NewAccent2`, `NewAccent3`: the accent colors.
 
+* `Font`: the font to use; *default*: `Lilex Nerd Font Mono`.
+* `FontSize`: by default it gets computed by the theme, but can be overwritten at liking.
+* `ForceFontSize`: set this to true to actually override the font size.
 
-# ToDos
-1. Add a toolbar for session selection. keyboar layout, power menu and eventually the virtual keyboard.
-2. The clock: both time and date should be displayed. Also, on hover an alternative time and date format should be displayed if defined in config.
-3. The actural login form: one or more of the following should be possible.
-    * Classic user and password text fields  + login button
-    * userSelector (ComboBox) + password text field + login button
-    * As above but the password text field is presented in an overlay panel
-    * All the above decided by some config option
-4. Details and optimizations 
-5. Make it editable by [rose-pine-desktop-shell](https://github.com/UtsuroNoArashi/rose-pine-desktop-shell.git) once it get released.
+* `Locale`: override system locale.
+* `HourFormat` and `DateFormat`: control how the time and date should be displayed.
+
+* `FormPosition`: controls where the form, and the clock module should be shown.
+    Accepted values are `rigth` and `left`.
+
+* `Margins` and `Roundings`: override the default value for margins and roundings.
+
+### Where are the system buttons and the session selector? 
+Our idea of a minimalist theme leaves no space for visible elements besides the essential ones,
+i.e. the form and clock. It is for this reason that both the system buttons and the session selector,
+are shown when hovering the top and bottom part of the screen respectively. 
